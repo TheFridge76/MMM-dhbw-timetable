@@ -1,6 +1,7 @@
 Module.register("MMM-dhbw-timetable", {
   defaults: {
-    course: "TINF17ITIN"
+    course: "TINF17ITIN",
+    updateInterval: 3600
   },
   start: function () {
     var courses = {
@@ -36,9 +37,10 @@ Module.register("MMM-dhbw-timetable", {
   notificationReceived: function(notification, payload, sender) {
     switch(notification) {
       case "DOM_OBJECTS_CREATED":
+        this.sendSocketNotification("GET_TIMETABLE", this.url);
         var timer = setInterval(()=>{
           this.sendSocketNotification("GET_TIMETABLE", this.url);
-        }, 1000);
+        }, this.config.updateInterval * 1000);
         break;
     }
   },
