@@ -19,7 +19,16 @@ Module.register("MMM-dhbw-timetable", {
     var element = document.createElement("div");
     this.timetable.lectures.forEach((l) => {
       var lectureElement = document.createElement("div");
-      lectureElement.innerHTML = l;
+      lectureElement.classList.add("small");
+      lectureElement.classList.add("normal");
+      var timeElement = document.createElement("span");
+      timeElement.innerHTML = l.time + ": ";
+      timeElement.classList.add("bold");
+      var topicElement = document.createElement("span");
+      topicElement.innerHTML = l.topic;
+      topicElement.classList.add("regular");
+      lectureElement.appendChild(timeElement);
+      lectureElement.appendChild(topicElement);
       element.appendChild(lectureElement);
     });
     return element;
@@ -43,7 +52,10 @@ Module.register("MMM-dhbw-timetable", {
         el = el.children[date.getDay() - 1];
         var lectures = [];
         for (var i = 0; i < el.getElementsByClassName("cal-time").length; i++) {
-          lectures.push(el.getElementsByClassName("cal-time")[i].innerHTML + ": " + el.getElementsByClassName("cal-title")[i].innerHTML);
+          lectures.push({
+            time: el.getElementsByClassName("cal-time")[i].innerHTML,
+            topic: el.getElementsByClassName("cal-title")[i].innerHTML
+          });
         }
         this.timetable = {
           lectures: lectures
